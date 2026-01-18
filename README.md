@@ -8,25 +8,29 @@ contenedor Docker con credenciales por variables de entorno.
 - Docker Compose (plugin `docker compose`)
 
 ## Uso rapido
-1) Build y run:
+1) Copiar y editar `.env`:
+```
+cp .env.example .env
+```
+2) Build y run:
 ```
 docker compose up -d --build
 ```
-2) Probar con curl:
+3) Probar con curl (usa las credenciales de `.env`):
 ```
-curl -x http://proxyuser:proxypass@localhost:3128 https://example.com -I
+curl -x http://usuario:contrasena@localhost:3128 https://example.com -I
 ```
-3) Ver logs:
+4) Ver logs:
 ```
 docker compose logs -f squid
 ```
-4) Detener:
+5) Detener:
 ```
 docker compose down
 ```
 
 ## Configuracion
-- Credenciales: editar `PROXY_USER` y `PROXY_PASS` en `compose.yml`.
+- Credenciales: editar `PROXY_USER` y `PROXY_PASS` en `.env`.
 - Puerto: `http_port 3128` en `squid.conf` y el mapeo `3128:3128` en `compose.yml`.
 - Politica de puertos: en `squid.conf` solo se permiten 80/443 por defecto.
   Si necesitas mas puertos, agrega reglas en `Safe_ports` y `SSL_ports`.
@@ -34,6 +38,8 @@ docker compose down
 ## Estructura del proyecto
 ```
 .
+├── .env.example      # plantilla de variables de entorno
+├── .env              # variables locales (ignorado por git)
 ├── compose.yml        # definicion del servicio y volumen de logs
 ├── Dockerfile         # imagen con squid y utilidades
 ├── entrypoint.sh      # crea /etc/squid/passwd y arranca squid
