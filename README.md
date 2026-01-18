@@ -20,11 +20,23 @@ docker compose up -d --build
 ```
 curl -x http://usuario:contrasena@localhost:3128 https://example.com -I
 ```
-4) Ver logs:
+4) Ver IP actual sin proxy (elige un checkeador):
+```
+curl https://checkip.googleapis.com
+curl https://api.ipify.org
+curl https://ifconfig.me/ip
+```
+5) Ver IP actual usando el proxy (elige un checkeador):
+```
+curl -x http://usuario:contrasena@localhost:3128 https://checkip.googleapis.com
+curl -x http://usuario:contrasena@localhost:3128 https://api.ipify.org
+curl -x http://usuario:contrasena@localhost:3128 https://ifconfig.me/ip
+```
+6) Ver logs:
 ```
 docker compose logs -f squid
 ```
-5) Detener:
+7) Detener:
 ```
 docker compose down
 ```
