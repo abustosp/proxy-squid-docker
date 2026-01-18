@@ -1,0 +1,15 @@
+services:
+  squid:
+    build: .
+    container_name: squid-proxy
+    environment:
+      PROXY_USER: "proxyuser"
+      PROXY_PASS: "proxypass"
+    ports:
+      - "3128:3128"
+    volumes:
+      - squid_logs:/var/log/squid
+    restart: unless-stopped
+
+volumes:
+  squid_logs:
