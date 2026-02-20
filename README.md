@@ -1,7 +1,7 @@
 # Proxy Squid en Docker
 
-Proxy HTTP/HTTPS con autenticacion basica usando Squid, listo para correr en
-contenedor Docker con credenciales por variables de entorno.
+Proxy HTTP/HTTPS usando Squid, listo para correr en contenedor Docker.
+La autenticacion basica por variables de entorno es opcional.
 
 ## Requisitos
 - Docker
@@ -16,9 +16,13 @@ cp .env.example .env
 ```
 docker compose up -d --build
 ```
-3) Probar con curl (usa las credenciales de `.env`):
+3) Probar con curl:
 ```
+# Con credenciales
 curl -x http://usuario:contrasena@localhost:3128 https://example.com -I
+
+# Sin credenciales
+curl -x http://localhost:3128 https://example.com -I
 ```
 4) Ver IP actual sin proxy (elige un checkeador):
 ```
@@ -42,7 +46,9 @@ docker compose down
 ```
 
 ## Configuracion
-- Credenciales: editar `PROXY_USER` y `PROXY_PASS` en `.env`.
+- Credenciales:
+  si defines `PROXY_USER` y `PROXY_PASS`, se habilita autenticacion basica.
+  Si no defines ninguno (o ambos vacios), el proxy arranca sin autenticacion.
 - Puerto: `http_port 3128` en `squid.conf` y el mapeo `3128:3128` en `compose.yml`.
 - Politica de puertos: en `squid.conf` solo se permiten 80/443 por defecto.
   Si necesitas mas puertos, agrega reglas en `Safe_ports` y `SSL_ports`.
@@ -59,7 +65,7 @@ docker compose down
 ```
 
 ## Notas de seguridad
-- Cambia las credenciales por defecto antes de exponer el proxy.
+- Si habilitas autenticacion, cambia las credenciales por defecto antes de exponer el proxy.
 - Si solo lo usaras localmente, limita el bind a `127.0.0.1:3128:3128`.
 - Considera restringir por IP con ACLs en `squid.conf`.
 
